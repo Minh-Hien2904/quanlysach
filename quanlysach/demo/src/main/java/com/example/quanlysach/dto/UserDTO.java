@@ -1,9 +1,9 @@
 package com.example.quanlysach.dto;
 
 public class UserDTO {
-
     private Long id;
     private String username;
+    private String password;  // Đảm bảo có trường password
     private String fullname;
     private String phoneNumber;
     private String identityNumber;
@@ -11,7 +11,7 @@ public class UserDTO {
     private String birthday;
     private String address;
 
-    // Getter và Setter cho id
+    // Getters và Setters
     public Long getId() {
         return id;
     }
@@ -20,7 +20,6 @@ public class UserDTO {
         this.id = id;
     }
 
-    // Getter và Setter cho username
     public String getUsername() {
         return username;
     }
@@ -29,7 +28,14 @@ public class UserDTO {
         this.username = username;
     }
 
-    // Getter và Setter cho fullname
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getFullname() {
         return fullname;
     }
@@ -38,7 +44,6 @@ public class UserDTO {
         this.fullname = fullname;
     }
 
-    // Getter và Setter cho phoneNumber
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -47,7 +52,6 @@ public class UserDTO {
         this.phoneNumber = phoneNumber;
     }
 
-    // Getter và Setter cho identityNumber
     public String getIdentityNumber() {
         return identityNumber;
     }
@@ -56,7 +60,6 @@ public class UserDTO {
         this.identityNumber = identityNumber;
     }
 
-    // Getter và Setter cho age
     public Integer getAge() {
         return age;
     }
@@ -65,7 +68,6 @@ public class UserDTO {
         this.age = age;
     }
 
-    // Getter và Setter cho birthday
     public String getBirthday() {
         return birthday;
     }
@@ -74,7 +76,6 @@ public class UserDTO {
         this.birthday = birthday;
     }
 
-    // Getter và Setter cho address
     public String getAddress() {
         return address;
     }
