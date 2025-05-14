@@ -1,17 +1,19 @@
 package com.example.quanlysach.dto;
 
+import java.time.LocalDate;
+
 public class UserDTO {
     private Long id;
     private String username;
-    private String password;  // Đảm bảo có trường password
     private String fullname;
     private String phoneNumber;
     private String identityNumber;
     private Integer age;
-    private String birthday;
+    private LocalDate birthday;
     private String address;
+    private String password;  // Giữ lại password
 
-    // Getters và Setters
+    // Các getter và setter đã có sẵn
     public Long getId() {
         return id;
     }
@@ -26,14 +28,6 @@ public class UserDTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFullname() {
@@ -68,11 +62,11 @@ public class UserDTO {
         this.age = age;
     }
 
-    public String getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -82,5 +76,13 @@ public class UserDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
