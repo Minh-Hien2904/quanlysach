@@ -1,7 +1,7 @@
 package com.example.quanlysach.controller;
 
 import com.example.quanlysach.entity.Book;
-import com.example.quanlysach.service.BookService;
+import com.example.quanlysach.service.book.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

@@ -1,25 +1,27 @@
-package com.example.quanlysach.service;
+package com.example.quanlysach.service.book;
 
 import com.example.quanlysach.entity.Book;
 import com.example.quanlysach.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BookService {
+public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    // Create a new book
+    @Override
     public Book createBook(Book book) {
         return bookRepository.save(book);
     }
 
-    // Update an existing book
+    @Override
     public Book updateBook(Long id, Book book) {
-        Book existing = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+        Book existing = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
         existing.setTitle(book.getTitle());
         existing.setAuthor(book.getAuthor());
         existing.setCategory(book.getCategory());
@@ -28,17 +30,18 @@ public class BookService {
         return bookRepository.save(existing);
     }
 
-    // Delete a book by ID
+    @Override
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
     }
 
-    // Get a book by ID
+    @Override
     public Book getBookById(Long id) {
-        return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
-    // Get all books
+    @Override
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }

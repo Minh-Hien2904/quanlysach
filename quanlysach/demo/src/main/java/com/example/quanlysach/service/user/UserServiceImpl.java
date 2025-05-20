@@ -1,14 +1,14 @@
-package com.example.quanlysach.service.impl;
+package com.example.quanlysach.service.user;
 
 import com.example.quanlysach.dto.user.UserDTO;
 import com.example.quanlysach.dto.user.UserRequest;
 import com.example.quanlysach.entity.User;
 import com.example.quanlysach.repository.UserRepository;
-import com.example.quanlysach.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,8 +75,19 @@ public class UserServiceImpl implements UserService {
         user.setFullname(request.getFullname());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setIdentityNumber(request.getIdentityNumber());
-        user.setAge(request.getAge());
-        user.setBirthday(request.getBirthday().toString());
+
+        if (request.getAge() != null) {
+            user.setAge(request.getAge());
+        } else {
+            user.setAge(0); // hoặc throw exception nếu muốn
+        }
+
+        if (request.getBirthday() != null) {
+            user.setBirthday(request.getBirthday().toString());
+        } else {
+            user.setBirthday(null);
+        }
+
         user.setAddress(request.getAddress());
         return user;
     }
@@ -89,7 +100,18 @@ public class UserServiceImpl implements UserService {
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setIdentityNumber(user.getIdentityNumber());
         dto.setAge(user.getAge());
-        dto.setBirthday(LocalDate.parse(user.getBirthday()));
+
+        if (user.getBirthday() != null && !user.getBirthday().isEmpty()) {
+            try {
+                dto.setBirthday(LocalDate.parse(user.getBirthday()));
+            } catch (DateTimeParseException e) {
+                // Có thể log lỗi ở đây hoặc xử lý theo ý bạn
+                dto.setBirthday(null);
+            }
+        } else {
+            dto.setBirthday(null);
+        }
+
         dto.setAddress(user.getAddress());
         return dto;
     }
