@@ -1,4 +1,4 @@
 package com.example.quanlysach.service;
 
-public class BorrowReturnService {
+public class BorrowingService {
 }

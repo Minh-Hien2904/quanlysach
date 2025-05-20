@@ -1,4 +1,4 @@
 package com.example.quanlysach.dto;
 
-public class RoleGroupDTO {
+public class RoleDTO {
 }

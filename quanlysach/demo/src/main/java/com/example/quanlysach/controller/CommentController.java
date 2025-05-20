@@ -1,4 +1,4 @@
 package com.example.quanlysach.controller;
 
-public class BorrowReturnController {
+public class CommentController {
 }

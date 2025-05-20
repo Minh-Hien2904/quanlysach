@@ -1,4 +1,4 @@
 package com.example.quanlysach.controller;
 
-public class RoleGroupController {
+public class PermissionController {
 }

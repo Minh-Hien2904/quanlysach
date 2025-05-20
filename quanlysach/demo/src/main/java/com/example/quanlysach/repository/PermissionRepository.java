@@ -1,4 +1,4 @@
 package com.example.quanlysach.repository;
 
-public class FunctionRepository {
+public class PermissionRepository {
 }

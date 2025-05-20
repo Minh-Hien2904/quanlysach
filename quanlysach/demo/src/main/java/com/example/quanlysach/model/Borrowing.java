@@ -1,4 +1,4 @@
 package com.example.quanlysach.model;
 
-public class BorrowReturn {
+public class Borrowing {
 }
