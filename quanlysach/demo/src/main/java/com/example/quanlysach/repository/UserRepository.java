@@ -1,6 +1,6 @@
 package com.example.quanlysach.repository;
 
-import com.example.quanlysach.model.User;
+import com.example.quanlysach.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

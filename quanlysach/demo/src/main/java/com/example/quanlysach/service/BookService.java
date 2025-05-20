@@ -1,6 +1,6 @@
 package com.example.quanlysach.service;
 
-import com.example.quanlysach.model.Book;
+import com.example.quanlysach.entity.Book;
 import com.example.quanlysach.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

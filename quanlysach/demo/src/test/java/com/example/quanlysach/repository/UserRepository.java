@@ -1,6 +1,6 @@
 package com.example.quanlysach.repository;
 
-import com.example.quanlysach.model.User;
+import com.example.quanlysach.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

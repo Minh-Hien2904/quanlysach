@@ -1,8 +1,9 @@
 package com.example.quanlysach.service;
 
-import com.example.quanlysach.dto.UserDTO;
-import com.example.quanlysach.model.User;
+import com.example.quanlysach.dto.user.UserDTO;
+import com.example.quanlysach.entity.User;
 import com.example.quanlysach.repository.UserRepository;
+import com.example.quanlysach.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -10,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 

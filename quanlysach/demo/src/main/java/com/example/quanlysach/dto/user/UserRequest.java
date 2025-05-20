@@ -1,9 +1,8 @@
-package com.example.quanlysach.dto;
+package com.example.quanlysach.dto.user;
 
 import java.time.LocalDate;
 
-public class UserDTO {
-    private Long id;
+public class UserRequest {
     private String username;
     private String fullname;
     private String phoneNumber;
@@ -11,17 +10,9 @@ public class UserDTO {
     private Integer age;
     private LocalDate birthday;
     private String address;
-    private String password;  // Giữ lại password
+    private String password;
 
-    // Các getter và setter đã có sẵn
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    // Getter và Setter
     public String getUsername() {
         return username;
     }

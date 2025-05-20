@@ -1,4 +1,4 @@
-package com.example.quanlysach.model;
+package com.example.quanlysach.entity;
 
 public class User {
     private long id;

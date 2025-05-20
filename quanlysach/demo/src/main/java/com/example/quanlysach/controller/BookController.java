@@ -1,6 +1,6 @@
 package com.example.quanlysach.controller;
 
-import com.example.quanlysach.model.Book;
+import com.example.quanlysach.entity.Book;
 import com.example.quanlysach.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

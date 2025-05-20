@@ -1,7 +1,7 @@
 package com.example.quanlysach.controller;
 
-import com.example.quanlysach.dto.UserDTO;
-import com.example.quanlysach.service.UserService;
+import com.example.quanlysach.dto.user.UserDTO;
+import com.example.quanlysach.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

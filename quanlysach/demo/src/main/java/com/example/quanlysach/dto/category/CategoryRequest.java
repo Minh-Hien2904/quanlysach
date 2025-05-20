@@ -1,11 +1,10 @@
-package com.example.quanlysach.dto;
+package com.example.quanlysach.dto.category;
 
 import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDTO {
-    private Long id;
+public class CategoryRequest {
     private String name;
 }

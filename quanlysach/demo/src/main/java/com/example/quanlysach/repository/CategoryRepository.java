@@ -1,6 +1,6 @@
 package com.example.quanlysach.repository;
 
-import com.example.quanlysach.model.Category;
+import com.example.quanlysach.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

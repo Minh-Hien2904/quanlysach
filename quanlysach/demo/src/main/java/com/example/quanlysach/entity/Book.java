@@ -1,4 +1,4 @@
-package com.example.quanlysach.model;
+package com.example.quanlysach.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,8 @@
 package com.example.quanlysach.controller;
 
-import com.example.quanlysach.dto.UserDTO;
-import com.example.quanlysach.service.UserService;
+import com.example.quanlysach.dto.user.UserDTO;
+import com.example.quanlysach.dto.user.UserRequest;
+import com.example.quanlysach.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +12,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/library/user")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
     // Đăng ký người dùng mới
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_CREATE_USER')")
-    public UserDTO createUser(@RequestBody UserDTO userDTO) {
-        return userService.registerUser(userDTO);
+    public UserDTO createUser(@RequestBody UserRequest userRequest) {
+        return userService.registerUser(userRequest);
     }
 
     // Lấy tất cả người dùng
@@ -38,8 +40,8 @@ public class UserController {
     // Cập nhật người dùng
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_UPDATE_USER')")
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        return userService.updateUser(id, userDTO);
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
+        return userService.updateUser(id, userRequest);
     }
 
     // Xóa người dùng
