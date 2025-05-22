@@ -2,7 +2,6 @@ package com.example.quanlysach.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,8 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.crypto.SecretKey;
 import java.io.IOException;
-import java.security.Key;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
@@ -31,16 +31,16 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long jwtExpirationMs;
 
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
+                .subject(userDetails.getUsername()) // dùng builder kiểu mới
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(getSigningKey()) // KHÔNG dùng SignatureAlgorithm
                 .compact();
     }
 
@@ -65,11 +65,10 @@ public class JwtUtil {
         Claims claims = Jwts.parser()
                 .setSigningKey(getSigningKey())
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)
+                .getBody();
         return claimsResolver.apply(claims);
     }
-
 
     public OncePerRequestFilter jwtAuthenticationFilter() {
         return new OncePerRequestFilter() {
@@ -83,7 +82,7 @@ public class JwtUtil {
 
                     if (username != null && validateToken(token, new User(username, "", List.of()))) {
                         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, List.of());
-                        // Set authentication context
+                        // TODO: Set the authentication context here if you're using SecurityContextHolder
                     }
                 }
                 chain.doFilter(request, response);

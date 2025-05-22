@@ -45,17 +45,20 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 	</properties>
+
 	<dependencies>
 		<!-- Spring Boot Core -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
+			<!-- Bộ starter cốt lõi của Spring Boot, chứa các thư viện cơ bản để chạy ứng dụng Spring Boot -->
 		</dependency>
 
 		<!-- Spring Boot Web Starter (Bổ sung) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<!-- Thư viện hỗ trợ xây dựng ứng dụng web, bao gồm REST API với Spring MVC và embedded Tomcat server -->
 		</dependency>
 
 		<!-- Spring Boot Test -->
@@ -63,25 +66,54 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<!-- Thư viện hỗ trợ viết và chạy các unit test, bao gồm JUnit, AssertJ, Hamcrest, Mockito, v.v. -->
 		</dependency>
 
 		<!-- Spring Security Starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+			<!-- Bộ thư viện bảo mật của Spring giúp cấu hình xác thực (authentication) và phân quyền (authorization) -->
 		</dependency>
 
-		<!-- JSON Web Token (JWT) Library -->
+		<!-- JJWT API -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
+			<artifactId>jjwt-api</artifactId>
 			<version>0.12.6</version>
+			<!-- Thư viện để tạo và xử lý JSON Web Token (JWT), phần API dùng trong lúc biên dịch -->
+		</dependency>
+
+		<!-- JJWT Implementation -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.6</version>
+			<scope>runtime</scope>
+			<!-- Thư viện triển khai thực tế cho JJWT, chỉ được sử dụng khi chạy ứng dụng -->
+		</dependency>
+
+		<!-- JJWT Jackson support -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.6</version>
+			<scope>runtime</scope>
+			<!-- Hỗ trợ serialize/deserialize JWT sử dụng thư viện Jackson -->
 		</dependency>
 
 		<!-- Spring Boot Starter Data JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<!-- Thư viện hỗ trợ làm việc với JPA (Java Persistence API) dùng để thao tác với database bằng ORM -->
+		</dependency>
+
+		<!-- Spring Boot Starter Validation -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+			<!-- Thư viện hỗ trợ kiểm tra (validate) dữ liệu đầu vào, dựa trên Hibernate Validator (JSR-380) -->
 		</dependency>
 
 		<!-- JWT Library from Auth0 -->
@@ -89,28 +121,43 @@
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
 			<version>3.18.2</version>
+			<!-- Thư viện khác để tạo và xác minh JWT, do Auth0 phát triển, dùng nếu bạn muốn thay thế hoặc bổ sung jjwt -->
 		</dependency>
 
+		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.18.38</version>
 			<scope>provided</scope>
+			<!-- Thư viện giúp tự động tạo getter/setter, constructor, builder,... giúp giảm boilerplate code -->
 		</dependency>
 
+		<!-- JUnit Jupiter -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
 			<version>5.13.0-RC1</version>
+			<!-- Phiên bản mới của JUnit dùng để viết unit test trong Java -->
 		</dependency>
 
+		<!-- Mockito -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-junit-jupiter</artifactId>
 			<version>5.18.0</version>
+			<!-- Thư viện dùng để tạo các mock object phục vụ viết unit test -->
+		</dependency>
+
+		<!-- MariaDB JDBC Driver -->
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
 	</dependencies>
+
 
 	<build>
 		<plugins>

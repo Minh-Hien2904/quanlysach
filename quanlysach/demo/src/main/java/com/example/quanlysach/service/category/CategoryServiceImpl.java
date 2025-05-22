@@ -1,4 +1,4 @@
-package com.example.quanlysach.service;
+package com.example.quanlysach.service.category;
 
 import com.example.quanlysach.dto.category.CategoryDTO;
 import com.example.quanlysach.dto.category.CategoryRequest;
@@ -13,10 +13,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService {
+public class CategoryServiceImpl implements CategoryService {
+
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
+    @Override
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll()
                 .stream()
@@ -24,6 +26,7 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public CategoryDTO createCategory(CategoryRequest request) {
         if (categoryRepository.existsByName(request.getName())) {
             throw new RuntimeException("Tên thể loại đã tồn tại");
@@ -34,6 +37,7 @@ public class CategoryService {
         return categoryMapper.toDTO(categoryRepository.save(category));
     }
 
+    @Override
     public CategoryDTO updateCategory(Long id, CategoryRequest request) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy thể loại"));
@@ -42,6 +46,7 @@ public class CategoryService {
         return categoryMapper.toDTO(categoryRepository.save(category));
     }
 
+    @Override
     public void deleteCategory(Long id) {
         if (!categoryRepository.existsById(id)) {
             throw new RuntimeException("Không tìm thấy thể loại");
@@ -49,6 +54,7 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
+    @Override
     public CategoryDTO getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy thể loại"));

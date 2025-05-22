@@ -2,7 +2,7 @@ package com.example.quanlysach.controller;
 
 import com.example.quanlysach.dto.category.CategoryDTO;
 import com.example.quanlysach.dto.category.CategoryRequest;
-import com.example.quanlysach.service.CategoryService;
+import com.example.quanlysach.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

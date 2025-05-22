@@ -5,8 +5,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "books")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Book {
@@ -29,4 +28,3 @@ public class Book {
     @Column(nullable = false)
     private String status;
 }
-
