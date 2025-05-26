@@ -11,6 +11,6 @@ public interface BorrowingService {
     List<Borrowing> getUnreturnedBorrowingsByUser(User user);
     Optional<Borrowing> findUnreturnedBorrowing(User user, Book book);
     Borrowing saveBorrowing(Borrowing borrowing);
-    Borrowing borrowBook(Long userId, Long bookId); // thêm
-    Borrowing returnBook(Long borrowingId); // thêm
+    Borrowing borrowBook(Long userId, Long bookId);
+    Borrowing returnBook(Long borrowingId);
 }

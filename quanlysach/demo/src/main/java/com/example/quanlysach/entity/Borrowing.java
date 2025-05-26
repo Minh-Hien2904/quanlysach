@@ -1,7 +1,7 @@
 package com.example.quanlysach.entity;
 
 import jakarta.persistence.*;
-import lombok.Data; // ← Thêm dòng này
+import lombok.Data;
 import java.time.LocalDate;
 
 @Data
