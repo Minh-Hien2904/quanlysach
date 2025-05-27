@@ -1,4 +1,8 @@
 package com.example.quanlysach.repository;
 
-public class PostRepository {
+import com.example.quanlysach.entity.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PostRepository extends JpaRepository<Post, Long> {
 }
+
