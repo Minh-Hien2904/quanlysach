@@ -3,13 +3,13 @@ package com.example.quanlysach.service.post;
 import com.example.quanlysach.dto.post.PostRequestDTO;
 import com.example.quanlysach.dto.post.PostResponseDTO;
 import com.example.quanlysach.entity.Post;
+import com.example.quanlysach.mapper.PostMapper;
 import com.example.quanlysach.repository.PostRepository;
-import com.example.quanlysach.service.post.PostService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -19,38 +19,40 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResponseDTO> getAllPosts() {
-        return postRepository.findAll().stream().map(this::mapToResponse).toList();
+        return postRepository.findAll()
+                .stream()
+                .map(PostMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public PostResponseDTO getPostById(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
-        return mapToResponse(post);
+        return PostMapper.toDTO(post);
     }
 
     @Override
     public PostResponseDTO createPost(PostRequestDTO request) {
-        Post post = new Post();
-        post.setTitle(request.getTitle());
-        post.setContent(request.getContent());
-        post.setPublisher(request.getPublisher());
-        postRepository.save(post);
-        return mapToResponse(post);
+        Post post = PostMapper.toEntity(request);
+        Post saved = postRepository.save(post);
+        return PostMapper.toDTO(saved);
     }
 
     @Override
     public PostResponseDTO updatePost(Long id, PostRequestDTO request) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
-        post.setTitle(request.getTitle());
-        post.setContent(request.getContent());
-        post.setPublisher(request.getPublisher());
-        return mapToResponse(postRepository.save(post));
+        PostMapper.updateEntity(post, request);
+        Post updated = postRepository.save(post);
+        return PostMapper.toDTO(updated);
     }
 
     @Override
     public void deletePost(Long id) {
+        if (!postRepository.existsById(id)) {
+            throw new RuntimeException("Post not found");
+        }
         postRepository.deleteById(id);
     }
 
@@ -63,13 +65,7 @@ public class PostServiceImpl implements PostService {
         } else {
             post.setDislikes(post.getDislikes() + 1);
         }
-        return mapToResponse(postRepository.save(post));
-    }
-
-    private PostResponseDTO mapToResponse(Post post) {
-        PostResponseDTO response = new PostResponseDTO();
-        BeanUtils.copyProperties(post, response);
-        return response;
+        Post updated = postRepository.save(post);
+        return PostMapper.toDTO(updated);
     }
 }
-
