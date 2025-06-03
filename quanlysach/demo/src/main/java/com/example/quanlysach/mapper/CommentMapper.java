@@ -1,7 +1,7 @@
 package com.example.quanlysach.mapper;
 
-import com.example.quanlysach.dto.comment.CommentResponse;
-import com.example.quanlysach.dto.comment.CommentRequest;
+import com.example.quanlysach.dto.response.CommentResponse;
+import com.example.quanlysach.dto.request.CommentRequest;
 import com.example.quanlysach.entity.Comment;
 import com.example.quanlysach.entity.Post;
 import com.example.quanlysach.entity.User;

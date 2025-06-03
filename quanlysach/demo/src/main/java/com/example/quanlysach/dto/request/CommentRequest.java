@@ -1,4 +1,4 @@
-package com.example.quanlysach.dto.comment;
+package com.example.quanlysach.dto.request;
 
 import lombok.Data;
 

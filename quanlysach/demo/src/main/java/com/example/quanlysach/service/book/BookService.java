@@ -1,12 +1,14 @@
 package com.example.quanlysach.service.book;
 
-import com.example.quanlysach.entity.Book;
+import com.example.quanlysach.dto.request.BookRequest;
+import com.example.quanlysach.dto.response.BookResponse;
+
 import java.util.List;
 
 public interface BookService {
-    Book createBook(Book book);
-    Book updateBook(Long id, Book book);
+    BookResponse createBook(BookRequest request);
+    BookResponse updateBook(Long id, BookRequest request);
     void deleteBook(Long id);
-    Book getBookById(Long id);
-    List<Book> getAllBooks();
+    BookResponse getBookById(Long id);
+    List<BookResponse> getAllBooks();
 }

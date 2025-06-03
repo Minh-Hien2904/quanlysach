@@ -1,9 +1,12 @@
 package com.example.quanlysach.controller;
 
-import com.example.quanlysach.entity.Book;
+import com.example.quanlysach.dto.request.BookRequest;
+import com.example.quanlysach.dto.response.BookResponse;
 import com.example.quanlysach.service.book.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -14,27 +17,32 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping
-    public Book createBook(@RequestBody Book book) {
-        return bookService.createBook(book);
+    public ResponseEntity<BookResponse> createBook(@RequestBody BookRequest request) {
+        BookResponse response = bookService.createBook(request);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
-        return bookService.updateBook(id, book);
+    public ResponseEntity<BookResponse> updateBook(@PathVariable Long id, @RequestBody BookRequest request) {
+        BookResponse response = bookService.updateBook(id, request);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable Long id) {
-        return bookService.getBookById(id);
+    public ResponseEntity<BookResponse> getBookById(@PathVariable Long id) {
+        BookResponse response = bookService.getBookById(id);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
+    public ResponseEntity<List<BookResponse>> getAllBooks() {
+        List<BookResponse> books = bookService.getAllBooks();
+        return ResponseEntity.ok(books);
     }
 }

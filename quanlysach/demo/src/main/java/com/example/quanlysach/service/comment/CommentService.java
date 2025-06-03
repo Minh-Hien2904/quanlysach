@@ -1,7 +1,7 @@
 package com.example.quanlysach.service.comment;
 
-import com.example.quanlysach.dto.comment.CommentResponse;
-import com.example.quanlysach.dto.comment.CommentRequest;
+import com.example.quanlysach.dto.response.CommentResponse;
+import com.example.quanlysach.dto.request.CommentRequest;
 
 import java.util.List;
 

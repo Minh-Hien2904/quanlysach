@@ -1,4 +1,4 @@
-package com.example.quanlysach.dto.comment;
+package com.example.quanlysach.dto.response;
 
 import lombok.Data;
 import java.time.LocalDateTime;

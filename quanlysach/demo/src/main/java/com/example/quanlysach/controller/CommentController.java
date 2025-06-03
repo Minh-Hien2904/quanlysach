@@ -1,7 +1,7 @@
 package com.example.quanlysach.controller;
 
-import com.example.quanlysach.dto.comment.CommentRequest;
-import com.example.quanlysach.dto.comment.CommentResponse;
+import com.example.quanlysach.dto.request.CommentRequest;
+import com.example.quanlysach.dto.response.CommentResponse;
 import com.example.quanlysach.service.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
