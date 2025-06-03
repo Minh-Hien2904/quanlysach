@@ -1,8 +1,10 @@
 package com.example.quanlysach.service.borrowing;
 
+import com.example.quanlysach.dto.response.BorrowingResponse;
 import com.example.quanlysach.entity.Borrowing;
 import com.example.quanlysach.entity.User;
 import com.example.quanlysach.entity.Book;
+import com.example.quanlysach.mapper.BorrowingMapper;
 import com.example.quanlysach.repository.BorrowingRepository;
 import com.example.quanlysach.repository.UserRepository;
 import com.example.quanlysach.repository.BookRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BorrowingServiceImpl implements BorrowingService {
@@ -19,37 +22,48 @@ public class BorrowingServiceImpl implements BorrowingService {
     private final BorrowingRepository borrowingRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
+    private final BorrowingMapper borrowingMapper;
 
     @Autowired
     public BorrowingServiceImpl(BorrowingRepository borrowingRepository,
                                 UserRepository userRepository,
-                                BookRepository bookRepository) {
+                                BookRepository bookRepository,
+                                BorrowingMapper borrowingMapper) {
         this.borrowingRepository = borrowingRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
+        this.borrowingMapper = borrowingMapper;
     }
 
     @Override
-    public List<Borrowing> getUnreturnedBorrowingsByUser(User user) {
-        return borrowingRepository.findByUserAndReturnedFalse(user);
-    }
-
-    @Override
-    public Optional<Borrowing> findUnreturnedBorrowing(User user, Book book) {
-        return borrowingRepository.findByUserAndBookAndReturnedFalse(user, book);
-    }
-
-    @Override
-    public Borrowing saveBorrowing(Borrowing borrowing) {
-        return borrowingRepository.save(borrowing);
-    }
-
-    @Override
-    public Borrowing borrowBook(Long userId, Long bookId) {
+    public List<BorrowingResponse> getUnreturnedBorrowingsByUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        List<Borrowing> borrowings = borrowingRepository.findByUserAndReturnedFalse(user);
+
+        return borrowings.stream()
+                .map(borrowingMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public BorrowingResponse findUnreturnedBorrowing(Long userId, Long bookId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+                .orElseThrow(() -> new RuntimeException("Book not found with id: " + bookId));
+
+        Optional<Borrowing> borrowingOpt = borrowingRepository.findByUserAndBookAndReturnedFalse(user, book);
+        return borrowingOpt.map(borrowingMapper::toResponse).orElse(null);
+    }
+
+    @Override
+    public BorrowingResponse borrowBook(Long userId, Long bookId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found with id: " + bookId));
 
         Optional<Borrowing> existingBorrow = borrowingRepository.findByUserAndBookAndReturnedFalse(user, book);
         if (existingBorrow.isPresent()) {
@@ -60,14 +74,15 @@ public class BorrowingServiceImpl implements BorrowingService {
         borrowing.setUser(user);
         borrowing.setBook(book);
         borrowing.setBorrowDate(LocalDate.now());
-        borrowing.setDueDate(LocalDate.now().plusDays(14)); // thời hạn mặc định 14 ngày
+        borrowing.setDueDate(LocalDate.now().plusDays(14));
         borrowing.setReturned(false);
 
-        return borrowingRepository.save(borrowing);
+        Borrowing saved = borrowingRepository.save(borrowing);
+        return borrowingMapper.toResponse(saved);
     }
 
     @Override
-    public Borrowing returnBook(Long borrowingId) {
+    public BorrowingResponse returnBook(Long borrowingId) {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new RuntimeException("Borrowing record not found"));
 
@@ -78,6 +93,7 @@ public class BorrowingServiceImpl implements BorrowingService {
         borrowing.setReturned(true);
         borrowing.setReturnDate(LocalDate.now());
 
-        return borrowingRepository.save(borrowing);
+        Borrowing saved = borrowingRepository.save(borrowing);
+        return borrowingMapper.toResponse(saved);
     }
 }

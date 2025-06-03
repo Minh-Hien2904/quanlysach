@@ -1,10 +1,11 @@
-package com.example.quanlysach.dto.borrowing;
+package com.example.quanlysach.dto.response;
 
 import lombok.Data;
+
 import java.time.LocalDate;
 
 @Data
-public class BorrowingDTO {
+public class BorrowingResponse {
     private Long id;
     private Long userId;
     private String userName;
@@ -12,6 +13,6 @@ public class BorrowingDTO {
     private String bookTitle;
     private LocalDate borrowDate;
     private LocalDate dueDate;
-    private LocalDate returnDate;
-    private boolean returned;
+    private LocalDate returnDate;  // null nếu chưa trả
+    private boolean returned;      // trạng thái đã trả hay chưa
 }
