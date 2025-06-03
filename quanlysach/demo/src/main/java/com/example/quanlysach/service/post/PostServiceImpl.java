@@ -1,7 +1,7 @@
 package com.example.quanlysach.service.post;
 
-import com.example.quanlysach.dto.post.PostRequestDTO;
-import com.example.quanlysach.dto.post.PostResponseDTO;
+import com.example.quanlysach.dto.request.PostRequest;
+import com.example.quanlysach.dto.response.PostResponse;
 import com.example.quanlysach.entity.Post;
 import com.example.quanlysach.mapper.PostMapper;
 import com.example.quanlysach.repository.PostRepository;
@@ -18,7 +18,7 @@ public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
 
     @Override
-    public List<PostResponseDTO> getAllPosts() {
+    public List<PostResponse> getAllPosts() {
         return postRepository.findAll()
                 .stream()
                 .map(PostMapper::toDTO)
@@ -26,21 +26,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDTO getPostById(Long id) {
+    public PostResponse getPostById(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         return PostMapper.toDTO(post);
     }
 
     @Override
-    public PostResponseDTO createPost(PostRequestDTO request) {
+    public PostResponse createPost(PostRequest request) {
         Post post = PostMapper.toEntity(request);
         Post saved = postRepository.save(post);
         return PostMapper.toDTO(saved);
     }
 
     @Override
-    public PostResponseDTO updatePost(Long id, PostRequestDTO request) {
+    public PostResponse updatePost(Long id, PostRequest request) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         PostMapper.updateEntity(post, request);
@@ -57,7 +57,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDTO likePost(Long id, boolean like) {
+    public PostResponse likePost(Long id, boolean like) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         if (like) {

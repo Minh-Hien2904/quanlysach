@@ -1,15 +1,15 @@
 package com.example.quanlysach.service.post;
 
-import com.example.quanlysach.dto.post.PostRequestDTO;
-import com.example.quanlysach.dto.post.PostResponseDTO;
+import com.example.quanlysach.dto.request.PostRequest;
+import com.example.quanlysach.dto.response.PostResponse;
 
 import java.util.List;
 
 public interface PostService {
-    List<PostResponseDTO> getAllPosts();
-    PostResponseDTO getPostById(Long id);
-    PostResponseDTO createPost(PostRequestDTO request);
-    PostResponseDTO updatePost(Long id, PostRequestDTO request);
+    List<PostResponse> getAllPosts();
+    PostResponse getPostById(Long id);
+    PostResponse createPost(PostRequest request);
+    PostResponse updatePost(Long id, PostRequest request);
     void deletePost(Long id);
-    PostResponseDTO likePost(Long id, boolean like);
+    PostResponse likePost(Long id, boolean like);
 }

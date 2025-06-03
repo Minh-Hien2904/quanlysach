@@ -1,7 +1,7 @@
 package com.example.quanlysach.controller;
 
-import com.example.quanlysach.dto.post.PostRequestDTO;
-import com.example.quanlysach.dto.post.PostResponseDTO;
+import com.example.quanlysach.dto.request.PostRequest;
+import com.example.quanlysach.dto.response.PostResponse;
 import com.example.quanlysach.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,28 +20,28 @@ public class PostController {
     // Danh sách tất cả bài viết
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_VIEW_POST')")
-    public ResponseEntity<List<PostResponseDTO>> getAllPosts() {
+    public ResponseEntity<List<PostResponse>> getAllPosts() {
         return ResponseEntity.ok(postService.getAllPosts());
     }
 
     // Xem chi tiết bài viết
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_VIEW_POST')")
-    public ResponseEntity<PostResponseDTO> getPostById(@PathVariable Long id) {
+    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
     // Thêm bài viết mới
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_CREATE_POST')")
-    public ResponseEntity<PostResponseDTO> createPost(@RequestBody PostRequestDTO request) {
+    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest request) { // ✅ Đổi sang PostRequest & PostResponse
         return ResponseEntity.ok(postService.createPost(request));
     }
 
     // Cập nhật bài viết
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_UPDATE_POST')")
-    public ResponseEntity<PostResponseDTO> updatePost(@PathVariable Long id, @RequestBody PostRequestDTO request) {
+    public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @RequestBody PostRequest request) {
         return ResponseEntity.ok(postService.updatePost(id, request));
     }
 
@@ -55,7 +55,7 @@ public class PostController {
 
     // Like / Dislike bài viết
     @PostMapping("/{id}/like")
-    public ResponseEntity<PostResponseDTO> likePost(@PathVariable Long id, @RequestParam boolean like) {
+    public ResponseEntity<PostResponse> likePost(@PathVariable Long id, @RequestParam boolean like) {
         return ResponseEntity.ok(postService.likePost(id, like));
     }
 }
