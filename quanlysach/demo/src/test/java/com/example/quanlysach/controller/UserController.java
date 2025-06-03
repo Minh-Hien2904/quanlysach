@@ -1,8 +1,9 @@
 package com.example.quanlysach.controller;
 
-import com.example.quanlysach.dto.user.UserDTO;
-import com.example.quanlysach.dto.user.UserRequest;
+import com.example.quanlysach.dto.request.UserRequest;
+import com.example.quanlysach.dto.response.UserResponse;
 import com.example.quanlysach.service.user.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,29 +27,37 @@ class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
+    private ObjectMapper objectMapper;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        objectMapper = new ObjectMapper();
     }
 
     @Test
     void testCreateUser() throws Exception {
+        // Tạo request
         UserRequest userRequest = new UserRequest();
         userRequest.setUsername("testuser");
         userRequest.setPassword("testpassword");
 
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("testuser");
-        // Có thể set các trường khác trong userDTO nếu cần
+        // Tạo response giả lập
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(1L);
+        userResponse.setUsername("testuser");
+        userResponse.setFullname("Test User");
 
-        // Mock khi gọi service với UserRequest sẽ trả về UserDTO
-        when(userService.registerUser(any(UserRequest.class))).thenReturn(userDTO);
+        // Mock service
+        when(userService.registerUser(any(UserRequest.class))).thenReturn(userResponse);
 
+        // Gọi API và kiểm tra phản hồi
         mockMvc.perform(post("/api/v1/library/user/create")
                         .contentType("application/json")
-                        .content("{\"username\":\"testuser\", \"password\":\"testpassword\"}"))
+                        .content(objectMapper.writeValueAsString(userRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("testuser"));
+                .andExpect(jsonPath("$.username").value("testuser"))
+                .andExpect(jsonPath("$.fullname").value("Test User"));
     }
 }

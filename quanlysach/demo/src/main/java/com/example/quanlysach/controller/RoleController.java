@@ -1,7 +1,7 @@
 package com.example.quanlysach.controller;
 
-import com.example.quanlysach.dto.role.RoleRequestDTO;
-import com.example.quanlysach.dto.role.RoleResponseDTO;
+import com.example.quanlysach.dto.request.RoleRequest;
+import com.example.quanlysach.dto.response.RoleResponse;
 import com.example.quanlysach.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,22 +17,22 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping
-    public ResponseEntity<List<RoleResponseDTO>> getAllRoles() {
+    public ResponseEntity<List<RoleResponse>> getAllRoles() {
         return ResponseEntity.ok(roleService.getAllRoles());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RoleResponseDTO> getRoleById(@PathVariable Long id) {
+    public ResponseEntity<RoleResponse> getRoleById(@PathVariable Long id) {
         return ResponseEntity.ok(roleService.getRoleById(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<RoleResponseDTO> createRole(@RequestBody RoleRequestDTO request) {
+    public ResponseEntity<RoleResponse> createRole(@RequestBody RoleRequest request) {
         return ResponseEntity.ok(roleService.createRole(request));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<RoleResponseDTO> updateRole(@PathVariable Long id, @RequestBody RoleRequestDTO request) {
+    public ResponseEntity<RoleResponse> updateRole(@PathVariable Long id, @RequestBody RoleRequest request) {
         return ResponseEntity.ok(roleService.updateRole(id, request));
     }
 

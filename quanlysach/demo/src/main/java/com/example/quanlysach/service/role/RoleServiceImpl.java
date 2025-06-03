@@ -1,7 +1,7 @@
 package com.example.quanlysach.service.role;
 
-import com.example.quanlysach.dto.role.RoleRequestDTO;
-import com.example.quanlysach.dto.role.RoleResponseDTO;
+import com.example.quanlysach.dto.request.RoleRequest;
+import com.example.quanlysach.dto.response.RoleResponse;
 import com.example.quanlysach.entity.Permission;
 import com.example.quanlysach.entity.Role;
 import com.example.quanlysach.entity.User;
@@ -32,35 +32,35 @@ public class RoleServiceImpl implements RoleService {
     private PermissionRepository permissionRepository;
 
     @Override
-    public List<RoleResponseDTO> getAllRoles() {
+    public List<RoleResponse> getAllRoles() {
         return roleRepository.findAll().stream()
-                .map(roleMapper::toResponseDTO)
+                .map(roleMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public RoleResponseDTO getRoleById(Long id) {
+    public RoleResponse getRoleById(Long id) {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found"));
-        return roleMapper.toResponseDTO(role);
+        return roleMapper.toResponse(role);
     }
 
     @Override
-    public RoleResponseDTO createRole(RoleRequestDTO request) {
+    public RoleResponse createRole(RoleRequest request) {
         Set<User> users = fetchUsersByIds(request.getUserIds());
         Set<Permission> permissions = fetchPermissionsByIds(request.getPermissionIds());
         Role role = roleMapper.toEntity(request, users, permissions);
-        return roleMapper.toResponseDTO(roleRepository.save(role));
+        return roleMapper.toResponse(roleRepository.save(role));
     }
 
     @Override
-    public RoleResponseDTO updateRole(Long id, RoleRequestDTO request) {
+    public RoleResponse updateRole(Long id, RoleRequest request) {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found"));
         Set<User> users = fetchUsersByIds(request.getUserIds());
         Set<Permission> permissions = fetchPermissionsByIds(request.getPermissionIds());
         roleMapper.updateEntity(role, request, users, permissions);
-        return roleMapper.toResponseDTO(roleRepository.save(role));
+        return roleMapper.toResponse(roleRepository.save(role));
     }
 
     @Override

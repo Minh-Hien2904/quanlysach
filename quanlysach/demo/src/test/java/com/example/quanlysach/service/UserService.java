@@ -1,7 +1,7 @@
 package com.example.quanlysach.service;
 
-import com.example.quanlysach.dto.user.UserDTO;
-import com.example.quanlysach.dto.user.UserRequest;
+import com.example.quanlysach.dto.request.UserRequest;
+import com.example.quanlysach.dto.response.UserResponse;
 import com.example.quanlysach.entity.User;
 import com.example.quanlysach.repository.UserRepository;
 import com.example.quanlysach.service.user.UserServiceImpl;
@@ -25,7 +25,6 @@ class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    // Inject UserServiceImpl chứ không phải interface UserService
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -36,24 +35,29 @@ class UserServiceTest {
 
     @Test
     void testRegisterUser() {
-        // Dùng UserRequest làm input cho method registerUser
+        // Prepare request
         UserRequest userRequest = new UserRequest();
         userRequest.setUsername("testuser");
         userRequest.setPassword("testpassword");
         userRequest.setFullname("Test User");
-        // ... có thể set thêm các trường cần thiết
 
+        // Prepare mock User entity after save
         User user = new User();
+        user.setId(1L);
         user.setUsername("testuser");
         user.setPassword("encodedpassword");
+        user.setFullname("Test User");
 
+        // Mock behaviors
         when(passwordEncoder.encode(anyString())).thenReturn("encodedpassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        UserDTO savedUser = userService.registerUser(userRequest);
+        // Call service
+        UserResponse savedUser = userService.registerUser(userRequest);
 
+        // Assertions
         assertNotNull(savedUser);
         assertEquals("testuser", savedUser.getUsername());
-        // Mật khẩu đã được mã hóa lưu trong entity User, không trả ra DTO nên không so sánh password ở đây
+        assertEquals("Test User", savedUser.getFullname());
     }
 }

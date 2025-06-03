@@ -1,7 +1,7 @@
 package com.example.quanlysach.mapper;
 
-import com.example.quanlysach.dto.role.RoleRequestDTO;
-import com.example.quanlysach.dto.role.RoleResponseDTO;
+import com.example.quanlysach.dto.request.RoleRequest;
+import com.example.quanlysach.dto.response.RoleResponse;
 import com.example.quanlysach.entity.ERole;
 import com.example.quanlysach.entity.Permission;
 import com.example.quanlysach.entity.Role;
@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @Component
 public class RoleMapper {
 
-    public RoleResponseDTO toResponseDTO(Role role) {
-        RoleResponseDTO dto = new RoleResponseDTO();
+    public RoleResponse toResponse(Role role) {
+        RoleResponse dto = new RoleResponse();
         dto.setId(role.getId());
         dto.setName(role.getName().name());
         dto.setDescription(role.getDescription());
@@ -28,7 +28,7 @@ public class RoleMapper {
         return dto;
     }
 
-    public Role toEntity(RoleRequestDTO dto, Set<User> users, Set<Permission> permissions) {
+    public Role toEntity(RoleRequest dto, Set<User> users, Set<Permission> permissions) {
         Role role = new Role();
         role.setName(ERole.valueOf(dto.getName()));
         role.setDescription(dto.getDescription());
@@ -37,7 +37,7 @@ public class RoleMapper {
         return role;
     }
 
-    public void updateEntity(Role role, RoleRequestDTO dto, Set<User> users, Set<Permission> permissions) {
+    public void updateEntity(Role role, RoleRequest dto, Set<User> users, Set<Permission> permissions) {
         role.setName(ERole.valueOf(dto.getName()));
         role.setDescription(dto.getDescription());
         role.setUsers(users);
