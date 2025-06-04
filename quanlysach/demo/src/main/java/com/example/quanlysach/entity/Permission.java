@@ -3,6 +3,9 @@ package com.example.quanlysach.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "permissions")
 @Getter
@@ -17,11 +20,17 @@ public class Permission {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String code; // Ví dụ: api.v1.library.permission.create
+    private String code; // ví dụ: user:create
 
     @Column(nullable = false)
-    private String name; // Ví dụ: Thêm mới
+    private String name; // ví dụ: Thêm người dùng
 
-    @Column
-    private String description; // Ví dụ: Mô tả chi tiết quyền
+    private String description;
+
+    private String method; // GET, POST, PUT, DELETE
+    private String path;   // API path như /api/users
+
+    @ManyToMany(mappedBy = "permissions")
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
 }
