@@ -2,16 +2,19 @@ package com.example.quanlysach.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
-@Data                   // tự động tạo getter/setter/toString/equals/hashCode
-@NoArgsConstructor      // constructor không tham số
-@AllArgsConstructor     // constructor có tất cả tham số
-public class User {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +38,45 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    // ✅ Trả về danh sách quyền từ roles
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName().name()))
+                .collect(Collectors.toSet());
+    }
+
+    // ✅ Trả về mật khẩu
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    // ✅ Trả về tên đăng nhập
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    // ✅ Các thuộc tính mặc định là true (tuỳ ý tuỳ chỉnh thêm logic)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
