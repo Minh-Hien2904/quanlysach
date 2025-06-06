@@ -30,6 +30,7 @@ public class User implements UserDetails {
     private int age;
     private String birthday;
     private String address;
+    private boolean commentBanned;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
