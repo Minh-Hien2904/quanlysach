@@ -3,6 +3,7 @@ package com.example.quanlysach.controller;
 import com.example.quanlysach.dto.request.PostRequest;
 import com.example.quanlysach.dto.response.PostResponse;
 import com.example.quanlysach.service.post.PostService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,43 +20,49 @@ public class PostController {
 
     // Danh sách tất cả bài viết
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE_VIEW_POST')")
-    public ResponseEntity<List<PostResponse>> getAllPosts() {
+    @PreAuthorize("fileRole(#request)")
+    public ResponseEntity<List<PostResponse>> getAllPosts(HttpServletRequest request) {
         return ResponseEntity.ok(postService.getAllPosts());
     }
 
     // Xem chi tiết bài viết
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_VIEW_POST')")
-    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {
+    @PreAuthorize("fileRole(#request)")
+    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id,
+                                                    HttpServletRequest request) {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
     // Thêm bài viết mới
     @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_CREATE_POST')")
-    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest request) { // ✅ Đổi sang PostRequest & PostResponse
-        return ResponseEntity.ok(postService.createPost(request));
+    @PreAuthorize("fileRole(#request)")
+    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest requestBody,
+                                                   HttpServletRequest request) {
+        return ResponseEntity.ok(postService.createPost(requestBody));
     }
 
     // Cập nhật bài viết
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_UPDATE_POST')")
-    public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @RequestBody PostRequest request) {
-        return ResponseEntity.ok(postService.updatePost(id, request));
+    @PreAuthorize("fileRole(#request)")
+    public ResponseEntity<PostResponse> updatePost(@PathVariable Long id,
+                                                   @RequestBody PostRequest requestBody,
+                                                   HttpServletRequest request) {
+        return ResponseEntity.ok(postService.updatePost(id, requestBody));
     }
 
     // Xóa bài viết
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_DELETE_POST')")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+    @PreAuthorize("fileRole(#request)")
+    public ResponseEntity<Void> deletePost(@PathVariable Long id,
+                                           HttpServletRequest request) {
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
 
-    // Like / Dislike bài viết
+    // Like / Dislike bài viết (không yêu cầu phân quyền)
     @PostMapping("/{id}/like")
-    public ResponseEntity<PostResponse> likePost(@PathVariable Long id, @RequestParam boolean like) {
+    public ResponseEntity<PostResponse> likePost(@PathVariable Long id,
+                                                 @RequestParam boolean like) {
         return ResponseEntity.ok(postService.likePost(id, like));
     }
 }

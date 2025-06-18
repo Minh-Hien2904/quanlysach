@@ -3,6 +3,7 @@ package com.example.quanlysach.controller;
 import com.example.quanlysach.dto.request.CategoryRequest;
 import com.example.quanlysach.dto.response.CategoryResponse;
 import com.example.quanlysach.service.category.CategoryService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,37 +20,41 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN', 'USER')")
-    public ResponseEntity<List<CategoryResponse>> getAll() {
+    @PreAuthorize("fileRole(#request)")
+    public ResponseEntity<List<CategoryResponse>> getAll(HttpServletRequest request) {
         List<CategoryResponse> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
-    public ResponseEntity<CategoryResponse> create(@Valid @RequestBody CategoryRequest request) {
-        CategoryResponse created = categoryService.createCategory(request);
+    @PreAuthorize("fileRole(#request)")
+    public ResponseEntity<CategoryResponse> create(@Valid @RequestBody CategoryRequest requestBody,
+                                                   HttpServletRequest request) {
+        CategoryResponse created = categoryService.createCategory(requestBody);
         return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN')")
+    @PreAuthorize("fileRole(#request)")
     public ResponseEntity<CategoryResponse> update(@PathVariable Long id,
-                                                   @Valid @RequestBody CategoryRequest request) {
-        CategoryResponse updated = categoryService.updateCategory(id, request);
+                                                   @Valid @RequestBody CategoryRequest requestBody,
+                                                   HttpServletRequest request) {
+        CategoryResponse updated = categoryService.updateCategory(id, requestBody);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @PreAuthorize("fileRole(#request)")
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                       HttpServletRequest request) {
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'LIBRARIAN', 'USER')")
-    public ResponseEntity<CategoryResponse> getById(@PathVariable Long id) {
+    @PreAuthorize("fileRole(#request)")
+    public ResponseEntity<CategoryResponse> getById(@PathVariable Long id,
+                                                    HttpServletRequest request) {
         CategoryResponse category = categoryService.getCategoryById(id);
         return ResponseEntity.ok(category);
     }

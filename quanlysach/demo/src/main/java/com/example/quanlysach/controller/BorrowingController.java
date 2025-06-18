@@ -2,6 +2,7 @@ package com.example.quanlysach.controller;
 
 import com.example.quanlysach.dto.response.BorrowingResponse;
 import com.example.quanlysach.service.borrowing.BorrowingService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,11 @@ public class BorrowingController {
     private final BorrowingService borrowingService;
 
     // Mượn sách.
-    @PreAuthorize("hasAuthority('BORROW_BOOK')")
+    @PreAuthorize("fileRole(#request)")
     @PostMapping("/borrow")
     public ResponseEntity<?> borrowBook(@RequestParam Long userId,
-                                        @RequestParam Long bookId) {
+                                        @RequestParam Long bookId,
+                                        HttpServletRequest request) {
         try {
             BorrowingResponse response = borrowingService.borrowBook(userId, bookId);
             return ResponseEntity.ok(response);
@@ -34,9 +36,10 @@ public class BorrowingController {
     }
 
     // Trả sách.
-    @PreAuthorize("hasAuthority('RETURN_BOOK')")
+    @PreAuthorize("fileRole(#request)")
     @PostMapping("/return")
-    public ResponseEntity<?> returnBook(@RequestParam Long borrowingId) {
+    public ResponseEntity<?> returnBook(@RequestParam Long borrowingId,
+                                        HttpServletRequest request) {
         try {
             BorrowingResponse response = borrowingService.returnBook(borrowingId);
             return ResponseEntity.ok(response);
@@ -49,9 +52,9 @@ public class BorrowingController {
     }
 
     // Xem danh sách sách chưa trả của một người dùng.
-    @PreAuthorize("hasAuthority('VIEW_BORROWINGS')")
+    @PreAuthorize("fileRole(#request)")
     @GetMapping("/unreturned/{userId}")
-    public ResponseEntity<?> getUnreturnedBorrowings(@PathVariable Long userId) {
+    public ResponseEntity<?> getUnreturnedBorrowings(@PathVariable Long userId, HttpServletRequest request) {
         try {
             List<BorrowingResponse> responses = borrowingService.getUnreturnedBorrowingsByUser(userId);
             return ResponseEntity.ok(responses);
