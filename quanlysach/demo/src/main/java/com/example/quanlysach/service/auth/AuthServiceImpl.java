@@ -1,4 +1,4 @@
-package com.example.quanlysach.controller;
+package com.example.quanlysach.service.auth;
 
 import com.example.quanlysach.dto.request.LoginRequest;
 import com.example.quanlysach.dto.response.LoginResponse;
@@ -7,22 +7,22 @@ import com.example.quanlysach.repository.UserRepository;
 import com.example.quanlysach.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/auth")
-public class AuthController {
+@Service
+public class AuthServiceImpl implements AuthService {
 
     @Autowired private UserRepository userRepo;
     @Autowired private JwtService jwtService;
     @Autowired private PasswordEncoder passwordEncoder;
 
-    @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
+    @Override
+    public LoginResponse login(LoginRequest request) {
         User user = userRepo.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Người dùng không tồn tại"));
+
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Sai mật khẩu");
         }
