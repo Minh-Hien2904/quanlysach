@@ -1,5 +1,6 @@
 package com.example.quanlysach.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import java.time.LocalDate;
 
@@ -11,6 +12,7 @@ public class UserRequest {
     private String phoneNumber;
     private String identityNumber;
     private Integer age;
-    private String birthday;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthday;
     private String address;
 }

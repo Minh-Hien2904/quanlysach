@@ -1,6 +1,9 @@
 package com.example.quanlysach.entity;
 
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
@@ -13,7 +16,7 @@ class UserTest {
         user.setPhoneNumber("123456789");
         user.setIdentityNumber("987654321");
         user.setAge(25);
-        user.setBirthday("2000-01-01");
+        user.setBirthday(LocalDate.parse("2000-01-01"));
         user.setAddress("123 Test Street");
 
         assertEquals("testuser", user.getUsername());
@@ -21,7 +24,7 @@ class UserTest {
         assertEquals("123456789", user.getPhoneNumber());
         assertEquals("987654321", user.getIdentityNumber());
         assertEquals(25, user.getAge());
-        assertEquals("2000-01-01", user.getBirthday());
+        assertEquals(LocalDate.parse("2000-01-01"), user.getBirthday());
         assertEquals("123 Test Street", user.getAddress());
     }
 }

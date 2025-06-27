@@ -38,18 +38,30 @@ public class AuthServiceImpl implements AuthService {
                 .map(role -> role.getName().name())
                 .toList();
 
-        String token = jwtService.generateToken(user.getUsername(), roles);
+        String token = jwtService.generateToken(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),        // Đảm bảo entity User có getEmail()
+                user.getFullname(),
+                roles
+        );
 
-        return new LoginResponse(token, "Bearer", user.getUsername(), roles);
+        return new LoginResponse(
+                token,
+                "Bearer",
+                user.getId(),
+                user.getUsername(),
+                user.getFullname(),
+                user.getEmail(),
+                roles
+        );
     }
 
     public void register(UserRequest request) {
-        // Kiểm tra nếu username đã tồn tại
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Username đã tồn tại");
         }
 
-        // Tạo user mới
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -57,15 +69,14 @@ public class AuthServiceImpl implements AuthService {
         user.setPhoneNumber(request.getPhoneNumber());
         user.setIdentityNumber(request.getIdentityNumber());
         user.setAge(request.getAge());
-        user.setBirthday(LocalDate.parse(request.getBirthday())); // Định dạng yyyy-MM-dd
+        user.setBirthday(request.getBirthday());        // yyyy-MM-dd
         user.setAddress(request.getAddress());
 
-        // Gán role mặc định: ROLE_USER
+        // Gán role mặc định
         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy ROLE_USER"));
         user.setRoles(Collections.singleton(userRole));
 
-        // Lưu vào DB
         userRepository.save(user);
     }
 }

@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
             user.setPhoneNumber(request.getPhoneNumber());
             user.setIdentityNumber(request.getIdentityNumber());
             user.setAge(request.getAge() != null ? request.getAge() : 0);
-            user.setBirthday(request.getBirthday() != null ? request.getBirthday().toString() : null);
+            user.setBirthday(request.getBirthday());
             user.setAddress(request.getAddress());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             User updatedUser = userRepository.save(user);
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(request.getPhoneNumber());
         user.setIdentityNumber(request.getIdentityNumber());
         user.setAge(request.getAge() != null ? request.getAge() : 0);
-        user.setBirthday(request.getBirthday() != null ? request.getBirthday().toString() : null);
+        user.setBirthday(request.getBirthday());
         user.setAddress(request.getAddress());
         return user;
     }
@@ -89,13 +89,7 @@ public class UserServiceImpl implements UserService {
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setIdentityNumber(user.getIdentityNumber());
         dto.setAge(user.getAge());
-        if (user.getBirthday() != null && !user.getBirthday().isEmpty()) {
-            try {
-                dto.setBirthday(LocalDate.parse(user.getBirthday()));
-            } catch (DateTimeParseException e) {
-                dto.setBirthday(null);
-            }
-        }
+        dto.setBirthday(user.getBirthday());
         dto.setAddress(user.getAddress());
         return dto;
     }

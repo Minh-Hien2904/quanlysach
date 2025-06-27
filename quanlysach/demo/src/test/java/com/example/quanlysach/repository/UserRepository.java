@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +24,7 @@ class UserRepositoryTest {
         user.setPhoneNumber("123456789");
         user.setIdentityNumber("987654321");
         user.setAge(25);
-        user.setBirthday("2000-01-01");
+        user.setBirthday(LocalDate.parse("2000-01-01"));
         user.setAddress("123 Test Street");
 
         userRepository.save(user);

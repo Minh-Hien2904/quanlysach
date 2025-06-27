@@ -4,9 +4,6 @@ import com.example.quanlysach.dto.request.UserRequest;
 import com.example.quanlysach.dto.response.UserResponse;
 import com.example.quanlysach.entity.User;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-
 public class UserMapper {
 
     /**
@@ -22,13 +19,7 @@ public class UserMapper {
         user.setIdentityNumber(request.getIdentityNumber());
         user.setAge(request.getAge());
         user.setAddress(request.getAddress());
-
-        if (request.getBirthday() != null) {
-            user.setBirthday(request.getBirthday().toString());
-        } else {
-            user.setBirthday(null);
-        }
-
+        user.setBirthday(request.getBirthday()); // ✅ Không cần .toString()
         user.setPassword(request.getPassword()); // sẽ mã hóa ở service
         return user;
     }
@@ -47,17 +38,7 @@ public class UserMapper {
         response.setIdentityNumber(user.getIdentityNumber());
         response.setAge(user.getAge());
         response.setAddress(user.getAddress());
-
-        if (user.getBirthday() != null && !user.getBirthday().isEmpty()) {
-            try {
-                response.setBirthday(LocalDate.parse(user.getBirthday()));
-            } catch (DateTimeParseException e) {
-                response.setBirthday(null);
-            }
-        } else {
-            response.setBirthday(null);
-        }
-
+        response.setBirthday(user.getBirthday()); // ✅ Không cần parse
         return response;
     }
 }

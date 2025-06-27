@@ -18,19 +18,38 @@ public class JwtService {
         this.secretKey = Keys.hmacShaKeyFor(secretKeyString.getBytes());
     }
 
-    // ✅ Tạo JWT với username và roles
-    public String generateToken(String username, List<String> roles) {
+    // ✅ Tạo JWT với các thông tin nâng cao
+    public String generateToken(Long userId, String username, String email, String fullname, List<String> roles) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userId);
+        claims.put("email", email);
+        claims.put("fullname", fullname);
+        claims.put("roles", roles);
+
         return Jwts.builder()
                 .subject(username)
-                .claim("roles", roles)
+                .claims(claims)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 3600000)) // 1 giờ
                 .signWith(secretKey)
                 .compact();
     }
 
+    // ✅ Trích xuất thông tin cụ thể từ claims
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
+    }
+
+    public Long extractUserId(String token) {
+        return extractAllClaims(token).get("userId", Long.class);
+    }
+
+    public String extractEmail(String token) {
+        return extractAllClaims(token).get("email", String.class);
+    }
+
+    public String extractFullname(String token) {
+        return extractAllClaims(token).get("fullname", String.class);
     }
 
     @SuppressWarnings("unchecked")
