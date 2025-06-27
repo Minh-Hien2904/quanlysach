@@ -11,6 +11,6 @@ public class UserRequest {
     private String phoneNumber;
     private String identityNumber;
     private Integer age;
-    private LocalDate birthday;
+    private String birthday;
     private String address;
 }

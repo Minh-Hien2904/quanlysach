@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class User implements UserDetails {
     private String phoneNumber;
     private String identityNumber;
     private int age;
-    private String birthday;
+    private LocalDate birthday;
     private String address;
     private boolean commentBanned;
 
@@ -40,7 +41,6 @@ public class User implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
-    // ✅ Trả về danh sách quyền từ roles
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
@@ -48,19 +48,16 @@ public class User implements UserDetails {
                 .collect(Collectors.toSet());
     }
 
-    // ✅ Trả về mật khẩu
     @Override
     public String getPassword() {
         return password;
     }
 
-    // ✅ Trả về tên đăng nhập
     @Override
     public String getUsername() {
         return username;
     }
 
-    // ✅ Các thuộc tính mặc định là true (tuỳ ý tuỳ chỉnh thêm logic)
     @Override
     public boolean isAccountNonExpired() {
         return true;

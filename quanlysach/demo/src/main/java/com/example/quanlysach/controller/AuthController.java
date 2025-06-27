@@ -1,37 +1,28 @@
 package com.example.quanlysach.controller;
 
 import com.example.quanlysach.dto.request.LoginRequest;
+import com.example.quanlysach.dto.request.UserRequest;
 import com.example.quanlysach.dto.response.LoginResponse;
-import com.example.quanlysach.entity.User;
-import com.example.quanlysach.repository.UserRepository;
-import com.example.quanlysach.security.JwtService;
+import com.example.quanlysach.service.auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired private UserRepository userRepo;
-    @Autowired private JwtService jwtService;
-    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private AuthService authService;
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
-        User user = userRepo.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("Người dùng không tồn tại"));
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Sai mật khẩu");
-        }
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        LoginResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
+    }
 
-        List<String> roles = user.getRoles().stream()
-                .map(role -> role.getName().name())
-                .toList();
-
-        String token = jwtService.generateToken(request.getUsername(), roles);
-        return new LoginResponse(token, "Bearer", request.getUsername(), roles);
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(@RequestBody UserRequest request) {
+        authService.register(request);
+        return ResponseEntity.ok().build();
     }
 }
